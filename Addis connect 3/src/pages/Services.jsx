@@ -9,11 +9,12 @@ function Services() {
 	]
 
 	return (
-		<div>
-			<h2 className="text-3xl font-bold mb-6">City Services</h2>
+		<section className="section">
+			<h2 className="section-title">City Services</h2>
+			<p className="section-subtitle">Explore available city services. More are coming soon.</p>
 			<div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 				{services.map((svc) => (
-					<div key={svc.id} className="card bg-base-100 shadow">
+					<div key={svc.id} className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow">
 						<div className="card-body">
 							<h3 className="card-title">{svc.name}</h3>
 							<p>{svc.description}</p>
@@ -24,7 +25,7 @@ function Services() {
 					</div>
 				))}
 			</div>
-		</div>
+		</section>
 	)
 }
 
