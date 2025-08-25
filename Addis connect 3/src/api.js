@@ -1,32 +1,28 @@
 import axios from 'axios'
 
-// Use the Vite proxy endpoint
+const AI_BASE_URL = '/api/chatbot'
+const AI_KEY = import.meta.env.VITE_AI_KEY
+
+// Debug log
+console.log('Environment check:', {
+  VITE_AI_KEY: AI_KEY ? '***' : 'undefined',
+})
+
+if (!AI_KEY) {
+  console.error('VITE_AI_KEY is not set in .env file')
+}
+
 const api = axios.create({
-  baseURL: '/api/chatbot', // <-- proxy to Gemini API via Vite
+  baseURL: AI_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 })
 
-// Optional: intercept requests for admin auth or debug logging
 api.interceptors.request.use((config) => {
-  // Attach app auth token (for protected admin APIs)
-  const token = localStorage.getItem('ac_token')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  // Attach AI provider key if present
+  if (AI_KEY && !config.headers['x-goog-api-key']) {
+    config.headers['x-goog-api-key'] = AI_KEY
   }
-
-  // For Gemini requests via proxy, the key is included in the query string
-  // so we do NOT need to send x-api-key header from the frontend
-
-  return config
-})
-
-// Optional: log all requests (for debugging)
-api.interceptors.request.use((config) => {
-  console.log('Sending request to:', config.baseURL + config.url)
   return config
 })
 
 export default api
-
-
-
