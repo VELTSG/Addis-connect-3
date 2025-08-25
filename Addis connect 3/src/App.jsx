@@ -6,6 +6,7 @@ import Services from './pages/Services.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
 import Chatbot from './pages/chatbot.jsx'
+import EthioShield from './pages/Ethioshield.jsx'
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 					<Route index element={<Home />} />
 					<Route path="services" element={<Services />} />
 					<Route path="chatbot" element={<Chatbot />} />  {/* ✅ added chatbot route */}
+					<Route path="ethioshield" element={<EthioShield />} />
 				</Route>
 
 				{/* Admin site */}

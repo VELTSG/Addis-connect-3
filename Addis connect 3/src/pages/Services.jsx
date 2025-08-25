@@ -1,8 +1,12 @@
+import { useNavigate } from 'react-router-dom'
+
 function Services() {
+	const navigate = useNavigate()
+
 	const services = [
-		{ id: 1, name: 'Ethio shield', description: 'Enhanced protecting against phishing and scam attacks.' },
+		{ id: 1, name: 'EthioShield', description: 'Enhanced protection against phishing and scam attacks.', route: '/ethioshield' },
 		{ id: 2, name: 'Public Transport', description: 'Real-time transit updates and passes.' },
-		{ id: 3, name: 'Smart AI', description: 'your friendly assistant.' },
+		{ id: 3, name: 'Smart AI', description: 'Your friendly assistant.', route: '/chatbot' },
 		{ id: 4, name: 'Permits', description: 'Apply for building and event permits.' },
 		{ id: 5, name: 'Safety Alerts', description: 'City notices and emergency updates.' },
 		{ id: 6, name: 'Parks & Recreation', description: 'Find events and book facilities.' },
@@ -22,7 +26,16 @@ function Services() {
 							<h3 className="card-title">{svc.name}</h3>
 							<p className="text-base-content/70">{svc.description}</p>
 							<div className="card-actions justify-end">
-								<button className="btn btn-outline btn-primary group-hover:translate-x-0.5 transition-transform">Details</button>
+								{svc.route ? (
+									<button
+										className="btn btn-outline btn-primary group-hover:translate-x-0.5 transition-transform"
+										onClick={() => navigate(svc.route)}
+									>
+										Details
+									</button>
+								) : (
+									<span className="text-sm text-base-content/50 italic">Coming soon</span>
+								)}
 							</div>
 						</div>
 					</div>
@@ -33,5 +46,3 @@ function Services() {
 }
 
 export default Services
-
-
