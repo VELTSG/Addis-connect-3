@@ -1,0 +1,238 @@
+<!-- 
+  This is a self-contained HTML file that represents the compiled 'dist' folder.
+  It includes all necessary HTML, CSS, and JavaScript.
+  The styling is done using Tailwind CSS for simplicity and responsiveness.
+  The JavaScript includes all logic, including the API call setup.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Frontend</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Use Inter font from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /*
+      Custom styling for the chat container to override Tailwind defaults
+      and ensure it fills its parent div (#chatbot-container).
+    */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      background-color: #f9fafb;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 1rem;
+      background-color: #3b82f6;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .message-bubble {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: 1.5rem;
+      word-wrap: break-word;
+    }
+    .user-message {
+      background-color: #dbeafe;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.5rem;
+    }
+    .bot-message {
+      background-color: #e5e7eb;
+      align-self: flex-start;
+      border-bottom-left-radius: 0.5rem;
+    }
+    .chat-input-area {
+      padding: 1rem;
+      background-color: #f3f4f6;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid #d1d5db;
+      background-color: white;
+      outline: none;
+    }
+    .chat-input:focus {
+      border-color: #3b82f6;
+    }
+    .chat-send-button {
+      background-color: #3b82f6;
+      color: white;
+      padding: 0.75rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+    .chat-send-button:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <!-- 
+    The main container where the chatbot will be rendered.
+    This is the only element that needs to be added to the host page.
+  -->
+  <div id="chatbot-container" class="w-[380px] h-[550px] shadow-2xl rounded-xl overflow-hidden bg-white">
+    <!-- Chatbot UI will be generated and appended here by the JavaScript -->
+  </div>
+
+  <script>
+    // Self-contained JavaScript for the chatbot logic.
+
+    // 1. REQUIRED: API CONFIGURATION
+    //    Your friends MUST replace this empty string with their API key.
+    //    The API key for the Gemini API should be obtained from the Google AI Studio.
+    const API_KEY = import.meta.env.VITE_AI_KEY;// <-- REPLACE WITH YOUR GEMINI API KEY
+
+    // 2. REQUIRED: GEMINI API ENDPOINT & MODEL
+    //    This is the endpoint your chatbot will call.
+    //    The model used is "gemini-2.5-flash-preview-05-20" which is efficient for chat.
+    const API_URL = `/api/chatbot/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+    
+    // --- Chatbot Logic ---
+    let chatHistory = [];
+    const container = document.getElementById('chatbot-container');
+    // Create the chatbot UI elements
+    const chatUI = `
+      <div class="chat-container">
+        <div class="chat-header">Simple Chatbot</div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input-area">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Type a message...">
+          <button id="chat-send-button" class="chat-send-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+              <path d="M3.478 2.405a.75.75 0 0 0-.926.94l2.432 7.917H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.917a.75.75 0 0 0 .926.94 60.599 60.599 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.599 60.599 0 0 0 3.478 2.405Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    `;
+
+    // Append UI to the container
+    container.innerHTML = chatUI;
+
+    const messagesContainer = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const sendButton = document.getElementById('chat-send-button');
+
+    // Helper function to create a message bubble
+    function createMessage(text, sender) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('message-bubble');
+      bubble.textContent = text;
+      if (sender === 'user') {
+        bubble.classList.add('user-message');
+      } else {
+        bubble.classList.add('bot-message');
+      }
+      messagesContainer.appendChild(bubble);
+      // Auto-scroll to the latest message
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Function to handle sending a message
+    async function sendMessage() {
+      const userMessage = chatInput.value.trim();
+      if (userMessage === '') return;
+
+      createMessage(userMessage, 'user');
+      chatInput.value = '';
+
+      // Add user message to chat history
+      chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+
+      // Add a loading message from the bot
+      const loadingMessage = createMessage('...', 'bot');
+
+      // The API payload for the Gemini API call
+      const payload = { contents: chatHistory };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`API call failed with status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        // Check for a valid response structure
+        if (result.candidates && result.candidates.length > 0 &&
+            result.candidates[0].content && result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0) {
+          const botMessage = result.candidates[0].content.parts[0].text;
+          
+          // Remove the loading message
+          messagesContainer.removeChild(messagesContainer.lastChild);
+          
+          // Display the bot's response
+          createMessage(botMessage, 'bot');
+          
+          // Add bot message to chat history
+          chatHistory.push({ role: 'model', parts: [{ text: botMessage }] });
+        } else {
+          messagesContainer.removeChild(messagesContainer.lastChild);
+          createMessage('Sorry, I could not get a response.', 'bot');
+          console.error('Unexpected API response structure:', result);
+        }
+      } catch (error) {
+        messagesContainer.removeChild(messagesContainer.lastChild);
+        createMessage('An error occurred. Please try again later.', 'bot');
+        console.error('Error during API call:', error);
+      }
+    }
+
+    // Event listeners
+    sendButton.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    // Initial welcome message
+    createMessage("Hello! How can I help you today?", "bot");
+
+  </script>
+
+</body>
+</html>
