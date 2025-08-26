@@ -1,9 +1,11 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom'
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 function AdminLayout() {
 	const navigate = useNavigate()
+	const location = useLocation()
 	const [theme, setTheme] = useState('business')
+	const [role, setRole] = useState(localStorage.getItem('ac_role') || '')
 
 	useEffect(() => {
 		const attr = document.documentElement.getAttribute('data-theme')
@@ -16,8 +18,27 @@ function AdminLayout() {
 		localStorage.setItem('ac_theme', theme)
 	}, [theme])
 
+	// Simple route guarding based on role
+	useEffect(() => {
+		const token = localStorage.getItem('ac_token')
+		const r = localStorage.getItem('ac_role')
+		setRole(r || '')
+		if (!token) {
+			// If hitting /admin without token, send to login
+			if (location.pathname.startsWith('/admin') && location.pathname !== '/admin/login') {
+				navigate('/admin/login', { replace: true })
+			}
+			return
+		}
+		// If user (not admin/editor) attempts to access /admin dashboard root, redirect to user dashboard
+		if ((r !== 'admin' && r !== 'editor') && location.pathname === '/admin') {
+			navigate('/dashboard', { replace: true })
+		}
+	}, [location.pathname, navigate])
+
 	function handleLogout() {
-		localStorage.removeItem('ac_token')
+	localStorage.removeItem('ac_token')
+	localStorage.removeItem('ac_role')
 		navigate('/admin/login')
 	}
 
@@ -25,11 +46,13 @@ function AdminLayout() {
 		<div className="min-h-screen flex flex-col bg-base-200 text-base-content">
 			<div className="navbar bg-base-200/80 backdrop-blur supports-[backdrop-filter]:bg-base-200/70 sticky top-0 z-40 border-b border-base-300">
 				<div className="flex-1">
-					<Link to="/admin" className="btn btn-ghost text-xl font-extrabold px-2" style={{fontFamily: 'var(--font-display)'}}>Admin</Link>
+					<Link to={role==='admin'||role==='editor'?'/admin':'/dashboard'} className="btn btn-ghost text-xl font-extrabold px-2" style={{fontFamily: 'var(--font-display)'}}>
+						{role==='admin'||role==='editor' ? 'Admin' : 'Account'}
+					</Link>
 				</div>
 				<div className="flex-none">
 					<ul className="menu menu-horizontal px-1 gap-2">
-						<li><Link className="btn btn-ghost" to="/admin/login">Login</Link></li>
+						<li><Link className="btn btn-ghost" to="/admin/login">{role? 'Switch Account' : 'Login'}</Link></li>
 						<li><button className="btn btn-ghost" onClick={handleLogout}>Logout</button></li>
 						<li><Link className="btn btn-primary" to="/">Back to Site</Link></li>
 					</ul>
