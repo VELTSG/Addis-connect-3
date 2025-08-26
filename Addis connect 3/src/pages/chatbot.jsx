@@ -79,7 +79,7 @@ export default function Chatbot() {
       <form onSubmit={sendMessage} className="mt-3 flex gap-2">
         <input
           className="input input-bordered flex-1"
-          placeholder="Type a message..."
+          placeholder="Chat with SmartCityAI
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
