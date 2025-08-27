@@ -31,7 +31,7 @@ function UserLanding() {
   return (
     <section className="container mx-auto px-4 py-12">
       <div className="max-w-2xl mx-auto bg-base-100 rounded-2xl shadow p-8 mb-8">
-        <h2 className="text-3xl font-bold mb-4">Welcome, {profile.email}</h2>
+        <h2 className="text-3xl font-bold mb-4">Welcome, {profile.username || profile.email}</h2>
         <div className="mb-4 text-base-content/70">Role: {profile.role}</div>
       </div>
       <div className="max-w-2xl mx-auto bg-base-100 rounded-2xl shadow p-8">

@@ -75,20 +75,20 @@ function Services() {
 
 		return (
 			<section className="section">
-				<h2 className="section-title">City Services</h2>
-				<p className="section-subtitle">Explore available city services.</p>
+				<h2 className="text-3xl font-extrabold mb-2 text-center" style={{fontFamily: 'var(--font-display)'}}>City Services</h2>
+				<p className="text-base text-base-content/70 mb-8 text-center">Explore available city services.</p>
 
 				 {/* Featured and placeholder services */}
 				 <div className="mb-10">
 					 <h3 className="text-xl font-bold mb-4">Featured</h3>
 					 <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 						 {featured.map((svc) => (
-							 <div key={svc.key} className="group card bg-base-100/95 shadow-md hover:shadow-xl transition-all duration-200 ease-out hover:-translate-y-1">
+							 <div key={svc.key} className="group card bg-base-100/95 shadow-md hover:shadow-lg transition-all duration-200 ease-out hover:-translate-y-1 hover:border-primary border border-transparent">
 								 <div className="card-body">
 									 <div className="flex items-center justify-between">
-										 <h3 className="card-title">{svc.name}</h3>
+										 <h3 className="card-title text-lg font-bold">{svc.name}</h3>
 									 </div>
-									 <p className="text-base-content/70">{svc.description}</p>
+									 <p className="text-base-content/70 text-base mb-2">{svc.description}</p>
 									 <div className="card-actions justify-end">
 										 <button className="btn btn-outline btn-primary" onClick={svc.action} disabled={svc.comingSoon}>
 											 {svc.comingSoon ? 'Coming soon' : svc.cta}
@@ -101,8 +101,8 @@ function Services() {
 				 </div>
 
 				{/* Database services */}
-				{loading && <div className="alert">Loading services…</div>}
-				{error && <div className="alert alert-error">{error}</div>}
+				{loading && <div className="alert text-center">Loading services…</div>}
+				{error && <div className="alert alert-error text-center">{error}</div>}
 
 				{!loading && !error && (
 					<>
@@ -111,14 +111,14 @@ function Services() {
 							{dynamicServices.map((svc) => (
 								<div
 									key={svc._id}
-									className="group card bg-base-100/95 shadow-md hover:shadow-xl transition-all duration-200 ease-out hover:-translate-y-1"
+									className="group card bg-base-100/95 shadow-md hover:shadow-lg transition-all duration-200 ease-out hover:-translate-y-1 hover:border-primary border border-transparent"
 								>
 									<div className="card-body">
-										<h3 className="card-title">{svc.name}</h3>
-										<p className="text-base-content/70">{svc.description}</p>
+										<h3 className="card-title text-lg font-bold">{svc.name}</h3>
+										<p className="text-base-content/70 text-base mb-2">{svc.description}</p>
 										<div className="badge badge-outline">{svc.category}</div>
 										<div className="card-actions justify-end">
-											<a className="btn btn-outline btn-primary" href={`http://localhost:5000/redirect/${svc._id}`} target="_blank" rel="noreferrer">
+											<a className="btn btn-outline btn-primary hover:scale-105 transition-transform duration-150" href={`http://localhost:5000/redirect/${svc._id}`} target="_blank" rel="noreferrer">
 												Visit
 											</a>
 										</div>

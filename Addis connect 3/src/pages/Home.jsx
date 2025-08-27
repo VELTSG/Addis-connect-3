@@ -12,13 +12,13 @@ function Home() {
 						 <p className="text-lg md:text-xl text-base-content/70 mb-8">
 							 A smart city model designed to serve all the online services provided in Addis Ababa. From making hospital appointments to finding your nearest taxi station, Addis Connect brings everything together in one convenient central hub.
 						 </p>
-									 <div className="flex flex-wrap justify-center gap-4 mb-8">
-										 <span className="badge badge-lg bg-gray-200 text-gray-700">Hospital Appointments</span>
-										 <span className="badge badge-lg bg-gray-200 text-gray-700">Taxi Stations</span>
-										 <span className="badge badge-lg bg-gray-200 text-gray-700">Bill Payments</span>
-										 <span className="badge badge-lg bg-gray-200 text-gray-700">City News</span>
-										 <span className="badge badge-lg bg-gray-200 text-gray-700">AI Assistance</span>
-									 </div>
+												 <div className="flex flex-wrap justify-center gap-4 mb-8">
+													 <span className="badge badge-lg bg-base-100/70 border border-base-300 text-base-content/80">Hospital Appointments</span>
+													 <span className="badge badge-lg bg-base-100/70 border border-base-300 text-base-content/80">Taxi Stations</span>
+													 <span className="badge badge-lg bg-base-100/70 border border-base-300 text-base-content/80">Bill Payments</span>
+													 <span className="badge badge-lg bg-base-100/70 border border-base-300 text-base-content/80">City News</span>
+													 <span className="badge badge-lg bg-base-100/70 border border-base-300 text-base-content/80">AI Assistance</span>
+												 </div>
 						 <Link to="/services" className="btn btn-primary btn-lg">Explore Services</Link>
 					 </div>
 				 </div>
@@ -37,7 +37,7 @@ function Home() {
 				 <div className="bg-gradient-to-br from-primary/10 to-base-200 rounded-xl shadow p-8 flex flex-col justify-center items-center">
 					 <h2 className="text-2xl font-bold mb-4">How It Works</h2>
 					 <p className="text-base-content/70 mb-4">Sign up, log in, and access all your city services from one place. Track your activity, manage appointments, and stay informed with real-time updates.</p>
-					 <Link to="/signup" className="btn btn-outline btn-primary">Get Started</Link>
+					 <Link to="/user-signup" className="btn btn-outline btn-primary">Get Started</Link>
 				 </div>
 			 </div>
 		 </section>

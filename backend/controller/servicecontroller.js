@@ -43,9 +43,8 @@ exports.redirectService = async (req, res) => {
 exports.createService = async (req, res) => {
 	try {
 		const data = req.body;
-		const created = await Service.create(data);
-			console.log(`Service created: ${created.name}`);
-			res.status(201).json(created);
+	const created = await Service.create(data);
+	res.status(201).json(created);
 	} catch (err) {
 			console.error('Create service error:', err);
 			res.status(400).json({ message: 'Invalid service data' });
@@ -56,9 +55,8 @@ exports.createService = async (req, res) => {
 exports.updateService = async (req, res) => {
 	try {
 		const updated = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-		if (!updated) return res.status(404).json({ message: 'Service not found' });
-			console.log(`Service updated: ${updated.name}`);
-			res.json(updated);
+	if (!updated) return res.status(404).json({ message: 'Service not found' });
+	res.json(updated);
 	} catch (err) {
 			console.error('Update service error:', err);
 			res.status(400).json({ message: 'Invalid update data' });
@@ -69,9 +67,8 @@ exports.updateService = async (req, res) => {
 exports.deleteService = async (req, res) => {
 	try {
 		const deleted = await Service.findByIdAndDelete(req.params.id);
-		if (!deleted) return res.status(404).json({ message: 'Service not found' });
-			console.log(`Service deleted: ${deleted.name}`);
-			res.json({ message: 'Service deleted' });
+	if (!deleted) return res.status(404).json({ message: 'Service not found' });
+	res.json({ message: 'Service deleted' });
 	} catch (err) {
 			console.error('Delete service error:', err);
 			res.status(400).json({ message: 'Invalid delete request' });

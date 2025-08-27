@@ -4,6 +4,7 @@ import { signup } from '../backendApi';
 
 function UserSignup() {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -16,7 +17,8 @@ function UserSignup() {
     setMessage('');
     setMessageType('');
     try {
-      await signup(email, password);
+      const res = await signup(email, password, username);
+      localStorage.setItem('ac_username', username);
       setMessage('Account created! Please log in.');
       setMessageType('success');
       setTimeout(() => {
@@ -38,6 +40,10 @@ function UserSignup() {
           <div className={`mb-4 text-center text-sm ${messageType === 'error' ? 'text-red-500' : 'text-green-600'}`}>{message}</div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
+          <label className="form-control w-full">
+            <div className="label"><span className="label-text">Username</span></div>
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="input input-bordered w-full" required />
+          </label>
           <label className="form-control w-full">
             <div className="label"><span className="label-text">Email</span></div>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input input-bordered w-full" required />

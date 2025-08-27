@@ -1,3 +1,19 @@
+// User profile and used services (mock implementation)
+export async function fetchUserProfile() {
+  // Simulate fetching user profile from backend
+  return {
+    email: localStorage.getItem('ac_email') || 'user@example.com',
+    role: localStorage.getItem('ac_role') || 'user',
+  };
+}
+
+export async function fetchUserServices() {
+  // Simulate fetching services the user has used
+  return [
+    { id: 'ethioshield', name: 'EthioShield', link: '/ethioshield' },
+    { id: 'chatbot', name: 'Smart AI', link: '/chatbot' },
+  ];
+}
 import axios from 'axios'
 
 // Axios instance for our Node backend

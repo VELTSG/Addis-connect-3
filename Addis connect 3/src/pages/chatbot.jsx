@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import api from '../api'
 
 export default function Chatbot() {
+  // Only declare navigate once at the top
   const [messages, setMessages] = useState([
     { role: 'system', content: 'Ask me anything about Addis Connect.' },
   ])
@@ -56,6 +58,7 @@ export default function Chatbot() {
     }
   }
 
+  const navigate = useNavigate();
   return (
     <div className="max-w-3xl mx-auto w-full h-[calc(100vh-8rem)] flex flex-col bg-base-100 rounded-xl shadow p-4">
       <div className="font-bold text-lg mb-2">Chatbot</div>
