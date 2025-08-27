@@ -44,9 +44,11 @@ exports.createService = async (req, res) => {
 	try {
 		const data = req.body;
 		const created = await Service.create(data);
-		res.status(201).json(created);
+			console.log(`Service created: ${created.name}`);
+			res.status(201).json(created);
 	} catch (err) {
-		res.status(400).json({ message: err.message });
+			console.error('Create service error:', err);
+			res.status(400).json({ message: 'Invalid service data' });
 	}
 };
 
@@ -55,9 +57,11 @@ exports.updateService = async (req, res) => {
 	try {
 		const updated = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 		if (!updated) return res.status(404).json({ message: 'Service not found' });
-		res.json(updated);
+			console.log(`Service updated: ${updated.name}`);
+			res.json(updated);
 	} catch (err) {
-		res.status(400).json({ message: err.message });
+			console.error('Update service error:', err);
+			res.status(400).json({ message: 'Invalid update data' });
 	}
 };
 
@@ -66,9 +70,11 @@ exports.deleteService = async (req, res) => {
 	try {
 		const deleted = await Service.findByIdAndDelete(req.params.id);
 		if (!deleted) return res.status(404).json({ message: 'Service not found' });
-		res.json({ success: true });
+			console.log(`Service deleted: ${deleted.name}`);
+			res.json({ message: 'Service deleted' });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+			console.error('Delete service error:', err);
+			res.status(400).json({ message: 'Invalid delete request' });
 	}
 };
 

@@ -4,19 +4,9 @@ import { useEffect, useState } from 'react'
 function AdminLayout() {
 	const navigate = useNavigate()
 	const location = useLocation()
-	const [theme, setTheme] = useState('business')
 	const [role, setRole] = useState(localStorage.getItem('ac_role') || '')
 
-	useEffect(() => {
-		const attr = document.documentElement.getAttribute('data-theme')
-		const saved = localStorage.getItem('ac_theme')
-		setTheme(attr || saved || 'business')
-	}, [])
-
-	useEffect(() => {
-		document.documentElement.setAttribute('data-theme', theme)
-		localStorage.setItem('ac_theme', theme)
-	}, [theme])
+	// Theme selector removed per request
 
 	// Simple route guarding based on role
 	useEffect(() => {
@@ -50,20 +40,12 @@ function AdminLayout() {
 						{role==='admin'||role==='editor' ? 'Admin' : 'Account'}
 					</Link>
 				</div>
-				<div className="flex-none">
+				<div className="navbar-center">
 					<ul className="menu menu-horizontal px-1 gap-2">
 						<li><Link className="btn btn-ghost" to="/admin/login">{role? 'Switch Account' : 'Login'}</Link></li>
 						<li><button className="btn btn-ghost" onClick={handleLogout}>Logout</button></li>
 						<li><Link className="btn btn-primary" to="/">Back to Site</Link></li>
 					</ul>
-					<select className="select select-bordered ml-3" value={theme} onChange={(e) => setTheme(e.target.value)}>
-						<option value="valentine">Valentine</option>
-						<option value="business">Business</option>
-						<option value="corporate">Corporate</option>
-						<option value="emerald">Emerald</option>
-						<option value="lofi">Lofi</option>
-						<option value="winter">Winter</option>
-					</select>
 				</div>
 			</div>
 			<main className="flex-1 container mx-auto px-4 py-12 md:py-16">

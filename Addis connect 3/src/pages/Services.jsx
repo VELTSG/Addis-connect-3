@@ -16,6 +16,7 @@ function Services() {
 				description: 'Enhanced protection against phishing and scam attacks.',
 				action: () => navigate('/ethioshield'),
 				cta: 'Details',
+				comingSoon: false,
 			},
 			{
 				key: 'chatbot',
@@ -23,6 +24,24 @@ function Services() {
 				description: 'Your friendly assistant.',
 				action: () => navigate('/chatbot'),
 				cta: 'Open',
+				comingSoon: false,
+			},
+			// Placeholder services
+			{
+				key: 'waterpay',
+				name: 'WaterPay',
+				description: 'Pay your water bills online.',
+				action: () => {},
+				cta: 'Details',
+				comingSoon: true,
+			},
+			{
+				key: 'trafficinfo',
+				name: 'Traffic Info',
+				description: 'Get real-time traffic updates.',
+				action: () => {},
+				cta: 'Details',
+				comingSoon: true,
 			},
 		]
 
@@ -44,23 +63,27 @@ function Services() {
 				<h2 className="section-title">City Services</h2>
 				<p className="section-subtitle">Explore available city services.</p>
 
-				{/* Featured services (built-in) */}
-				<div className="mb-10">
-					<h3 className="text-xl font-bold mb-4">Featured</h3>
-					<div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-						{featured.map((svc) => (
-							<div key={svc.key} className="group card bg-base-100/95 shadow-md hover:shadow-xl transition-all duration-200 ease-out hover:-translate-y-1">
-								<div className="card-body">
-									<h3 className="card-title">{svc.name}</h3>
-									<p className="text-base-content/70">{svc.description}</p>
-									<div className="card-actions justify-end">
-										<button className="btn btn-outline btn-primary" onClick={svc.action}>{svc.cta}</button>
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
+				 {/* Featured and placeholder services */}
+				 <div className="mb-10">
+					 <h3 className="text-xl font-bold mb-4">Featured</h3>
+					 <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+						 {featured.map((svc) => (
+							 <div key={svc.key} className="group card bg-base-100/95 shadow-md hover:shadow-xl transition-all duration-200 ease-out hover:-translate-y-1">
+								 <div className="card-body">
+									 <div className="flex items-center justify-between">
+										 <h3 className="card-title">{svc.name}</h3>
+									 </div>
+									 <p className="text-base-content/70">{svc.description}</p>
+									 <div className="card-actions justify-end">
+										 <button className="btn btn-outline btn-primary" onClick={svc.action} disabled={svc.comingSoon}>
+											 {svc.comingSoon ? 'Coming soon' : svc.cta}
+										 </button>
+									 </div>
+								 </div>
+							 </div>
+						 ))}
+					 </div>
+				 </div>
 
 				{/* Database services */}
 				{loading && <div className="alert">Loading services…</div>}
