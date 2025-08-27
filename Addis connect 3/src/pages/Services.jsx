@@ -26,7 +26,6 @@ function Services() {
 				cta: 'Open',
 				comingSoon: false,
 			},
-			// Placeholder services
 			{
 				key: 'waterpay',
 				name: 'WaterPay',
@@ -39,6 +38,22 @@ function Services() {
 				key: 'trafficinfo',
 				name: 'Traffic Info',
 				description: 'Get real-time traffic updates.',
+				action: () => {},
+				cta: 'Details',
+				comingSoon: true,
+			},
+			{
+				key: 'hospital',
+				name: 'Hospital Appointments',
+				description: 'Book appointments at city hospitals.',
+				action: () => {},
+				cta: 'Details',
+				comingSoon: true,
+			},
+			{
+				key: 'taxistation',
+				name: 'Taxi Stations',
+				description: 'Find your nearest taxi station.',
 				action: () => {},
 				cta: 'Details',
 				comingSoon: true,
