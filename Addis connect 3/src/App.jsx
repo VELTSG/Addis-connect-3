@@ -5,6 +5,7 @@ import Home from './pages/Home.jsx'
 import Services from './pages/Services.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
+import UserDashboard from './pages/UserDashboard.jsx'
 import Chatbot from './pages/chatbot.jsx'
 import EthioShield from './pages/Ethioshield.jsx'
 
@@ -20,10 +21,14 @@ function App() {
 					<Route path="ethioshield" element={<EthioShield />} />
 				</Route>
 
-				{/* Admin site */}
+
+				{/* Auth and dashboards */}
 				<Route path="/admin" element={<AdminLayout />}>
 					<Route path="login" element={<AdminLogin />} />
 					<Route index element={<AdminDashboard />} />
+				</Route>
+				<Route path="/dashboard" element={<AdminLayout />}>
+					<Route index element={<UserDashboard />} />
 				</Route>
 
 				{/* Fallback */}

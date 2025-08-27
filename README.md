@@ -52,5 +52,22 @@ The goal is to create a **scalable smart city hub** where citizens can access to
 ---
 
 
+## Dev setup (frontend + backend)
+
+Backend
+- cd backend
+- Ensure `.env` has MONGO_URL, PORT=5000, JWT_SECRET
+- npm install (first time)
+- npm run seed (creates admin and sample services)
+- npm start
+
+Frontend
+- cd "Addis connect 3"
+- npm install (first time)
+- npm run dev
+
+Vite proxies `/api` to http://localhost:5000.
+
+
 
 
